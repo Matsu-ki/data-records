@@ -3,6 +3,7 @@
 #include <string.h>
 #include <conio.h>
 #include <windows.h>
+//By Matsu
 
 FILE * file;
 
@@ -170,7 +171,99 @@ void list(){
 }
 
 void change(){
-	
+	system("cls");
+    char crecord_code[5];
+    char cname[30];
+    char cphone_number[30];
+    char cage[20];
+    char cgender[50];
+    int a = -1;
+    int status = 0, found = 0;
+
+   	file = fopen("archive.dat","rb");
+	if (file == NULL){
+        printf("Error in the file!\n");
+        system("pause");
+        system("cls"); 
+	}
+    else{
+        printf("Type the record code: ");
+        fflush(stdin);
+        gets(crecord_code);
+        while(fread(&archive, sizeof(person), 1, file) == 1){
+            if(strcmp(archive.record_code, crecord_code) == 0){
+            	found = 1;
+            	break;
+            }
+        }
+        if(found == 0){
+            puts("Invalid code!\n");
+            puts("Closing the program...");
+            system("pause"); 
+            system("cls");
+        }
+         
+        else{
+            puts("\nCode sucessfuly found!\n");
+            
+            printf("Code: %s\n", archive.record_code);
+            printf("Name: %s\n", archive.name);
+			printf("Phone number: %s\n", archive.phone_number);
+			printf("Age: %s\n", archive.age);
+			printf("Gender: %s\n", archive.gender);
+            puts("\n");         
+              
+            printf("Number of the new record code [If you want]: ");
+			fflush(stdin);
+			gets(crecord_code);
+		
+			printf("New client name [If you want]: ");
+			fflush(stdin);
+			gets(cname);
+		
+			printf("New phone number [If you want]: ");
+			fflush(stdin);
+			gets(cphone_number);
+		
+			printf("New age [If you want]: ");
+			fflush(stdin);
+			gets(cage);
+		
+			printf("New gender [If you want]: ");
+			fflush(stdin);
+			gets(cgender);
+	          
+	        strcpy(record.record_code, crecord_code);
+			strcpy(record.name, cname);
+			strcpy(record.phone_number, cphone_number);
+			strcpy(record.age, cage);
+			strcpy(record.gender, cgender);	  
+              
+            system("cls");  
+            puts("\nNew data records...");
+            puts("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+            printf("\nRecord code: %s\n", archive.record_code);
+        	printf("Name: %s\n", archive.name);
+        	printf("Phone number: %s\n", archive.phone_number);
+        	printf("Age: %s\n", archive.age);
+        	printf("Gender: %s\n", archive.gender);
+            
+            puts("Updating data...");
+            fseek(file, a*sizeof(person), SEEK_CUR);
+            status = fwrite(&archive, sizeof(person), 1, file);
+            fclose(file);
+            if(status == 1){
+                puts("Data updated successfully!");
+                system("pause"); 
+                system("cls");
+            }
+            else{
+                puts("An error occurred while updating the data!");
+                system("pause"); 
+                system("cls");
+            }
+        }
+	}
 }
 
 
@@ -209,6 +302,9 @@ int main(){
             	
             case 3:
             	list();
+            	
+            case 4:
+            	change();
 
             default:
                 invalid();
@@ -218,3 +314,18 @@ int main(){
     getch();
 	
 }
+
+/*
+Translate to your language if you 
+want to understand better or 
+help someone
+
+you are welcome
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+"Planning for failure is even dumber than simply planning."
+
+Sanchez, Rick.
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+*/
